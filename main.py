@@ -1,4 +1,5 @@
 from services.add_contact import add_contact
+from services.view_contacts import view_contacts
 from utils.contact_utils import load_contacts
 from utils.input_utils import get_validated_input
 from utils.ui_utils import clear_screen, print_header, print_menu
@@ -14,16 +15,15 @@ def main():
         print_menu(menu_options)
 
         choice = get_validated_input(
-            f"Enter your choice (1-6): ",
+            "Enter your choice (1-6): ",
             lambda x: x.isdigit() and 1 <= int(x) <= 6,
-            f"Invalid choice. Please enter a number between 1 and 6."
+            "Invalid choice. Please enter a number between 1 and 6."
         )
 
         if choice == "1":
             add_contact(contacts, name_index)
         elif choice == "2":
-            # view
-            pass
+            view_contacts(contacts)
         elif choice == "3":
             # update
             pass

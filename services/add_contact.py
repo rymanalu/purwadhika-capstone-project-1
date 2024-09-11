@@ -1,3 +1,4 @@
+from services.display_contact import display_contact
 from utils.input_utils import get_validated_input
 from utils.ui_utils import print_header
 
@@ -10,7 +11,7 @@ def add_contact(contacts, name_index):
     name = get_validated_input(
         "Enter name: ", lambda x: x.strip() != "", "Name cannot be empty.")
     phone = get_validated_input("Enter phone number: ", lambda x: x.replace(
-        '-', '').isdigit(), "Invalid phone number. Please enter digits only.")
+        "-", "").isdigit(), "Invalid phone number. Please enter digits only.")
     address = input("Enter address (optional): ")
     email = get_validated_input(
         "Enter email (optional): ", lambda x: "@" in x or x == "", "Invalid email format.")
@@ -41,14 +42,8 @@ def add_contact(contacts, name_index):
     else:
         name_index[name_key] = [new_id]
 
-    print(f"\nContact added successfully with ID: {new_id}")
-
-    print(f"\nNew Contact Details:")
-    print(f"Name: {name}")
-    print(f"Phone: {phone}")
-    print(f"Address: {address}")
-    print(f"Email: {email}")
-    print(f"Website: {website}")
-    print(f"Categories: {", ".join(categories)}")
+    print("\nContact added successfully!")
+    print("\nNew Contact Details:")
+    display_contact(new_contact)
 
     return new_id
