@@ -25,7 +25,7 @@ def main():
         elif choice == "3":
             operations.update_contact(contacts, name_index)
         elif choice == "4":
-            # delete
+            operations.delete_contact(contacts, name_index)
             pass
         elif choice == "5":
             operations.search_contacts(contacts, name_index)

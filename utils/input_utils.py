@@ -1,3 +1,14 @@
+def confirm_action(prompt):
+    while True:
+        response = input(f"{prompt} (y/n): ").lower().strip()
+        if response in ["y", "yes"]:
+            return True
+        elif response in ["n", "no"]:
+            return False
+        else:
+            print("Please answer with 'y' or 'n'.")
+
+
 def get_validated_input(prompt, validator=None, error_message="Invalid input. Please try again."):
     while True:
         value = input(prompt)

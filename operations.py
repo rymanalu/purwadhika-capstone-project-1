@@ -1,6 +1,6 @@
 import csv
 import os
-from utils.input_utils import get_validated_input, input_contact
+from utils.input_utils import confirm_action, get_validated_input, input_contact
 from utils.ui_utils import print_contact, print_contact_pagination, print_header
 
 
@@ -22,6 +22,37 @@ def add_contact(contacts, name_index):
 
     print("\nContact added successfully! New Contact Details:")
     print_contact(new_contact)
+
+
+def delete_contact(contacts, name_index):
+    print_header("Delete Contact")
+
+    if not contacts:
+        print("No contacts available to delete.")
+        return
+
+    contact_id = get_validated_input(
+        "Enter the ID of the contact to delete: ",
+        lambda x: x.isdigit() and int(x) in contacts,
+        "Invalid ID. Please enter a valid contact ID."
+    )
+    contact_id = int(contact_id)
+
+    contact = contacts[contact_id]
+    print("\nContact to be deleted:")
+    print_contact(contact)
+
+    if not confirm_action("Are you sure you want to delete this contact?"):
+        print("Deletion cancelled.")
+        return
+
+    name_key = contact['name'].lower()
+    name_index[name_key].remove(contact_id)
+    if not name_index[name_key]:
+        del name_index[name_key]
+
+    del contacts[contact_id]
+    print(f"\nContact with ID {contact_id} has been successfully deleted.")
 
 
 def load_contacts():
