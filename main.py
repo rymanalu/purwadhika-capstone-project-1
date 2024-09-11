@@ -31,6 +31,7 @@ def main():
             operations.search_contacts(contacts, name_index)
             pass
         elif choice == "6":
+            operations.save_contacts(contacts)
             print("Thank you for using Contacts. Goodbye!")
             break
 

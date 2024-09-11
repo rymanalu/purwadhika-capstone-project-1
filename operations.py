@@ -1,10 +1,14 @@
 import csv
 import os
 from utils.input_utils import confirm_action, get_validated_input, input_contact
-from utils.ui_utils import print_contact, print_contact_pagination, print_header
+from utils.ui_utils import clear_screen, print_contact, print_contact_pagination, print_header
+
+fieldnames = ['id', 'name', 'phone', 'address',
+              'email', 'website', 'categories']
 
 
 def add_contact(contacts, name_index):
+    clear_screen()
     print_header("Add New Contact")
 
     new_id = max(contacts.keys(), default=0) + 1
@@ -25,6 +29,7 @@ def add_contact(contacts, name_index):
 
 
 def delete_contact(contacts, name_index):
+    clear_screen()
     print_header("Delete Contact")
 
     if not contacts:
@@ -55,19 +60,17 @@ def delete_contact(contacts, name_index):
     print(f"\nContact with ID {contact_id} has been successfully deleted.")
 
 
-def load_contacts():
+def load_contacts(filename='contacts.csv'):
     contacts = {}
     name_index = {}
-    csv_file = "contacts.csv"
 
-    if not os.path.exists(csv_file):
-        with open(csv_file, "w", newline="") as file:
+    if not os.path.exists(filename):
+        with open(filename, "w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(["id", "name", "phone", "address",
-                            "email", "website", "categories"])
+            writer.writerow(fieldnames)
         return contacts, name_index
 
-    with open(csv_file, "r", newline="") as file:
+    with open(filename, "r", newline="") as file:
         reader = csv.DictReader(file)
         for row in reader:
             contact_id = int(row["id"])
@@ -86,7 +89,26 @@ def load_contacts():
     return contacts, name_index
 
 
+def save_contacts(contacts, filename='contacts.csv'):
+    try:
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+            writer.writeheader()
+
+            for contact in contacts.values():
+                contact_copy = contact.copy()
+                contact_copy['categories'] = ','.join(
+                    contact_copy['categories'])
+                writer.writerow(contact_copy)
+    except IOError as e:
+        print(f"An error occurred while saving contacts: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+
 def search_contacts(contacts, name_index):
+    clear_screen()
     print_header("Search Contacts")
 
     search_term = get_validated_input("Enter search term: ", lambda x: len(
@@ -114,6 +136,7 @@ def search_contacts(contacts, name_index):
 
 
 def update_contact(contacts, name_index):
+    clear_screen()
     print_header("Update Contact")
 
     contact_id = get_validated_input("Enter the ID of the contact to update: ", lambda x: x.isdigit(
@@ -124,7 +147,7 @@ def update_contact(contacts, name_index):
     print("\nCurrent contact details:")
     print_contact(contact)
 
-    updated_contact = input_contact(contact)
+    updated_contact = input_contact(contact.copy())
 
     if updated_contact["name"].lower() != contact["name"].lower():
         old_name_key = contact["name"].lower()
@@ -144,7 +167,10 @@ def update_contact(contacts, name_index):
 
 
 def view_contacts(contacts):
+    clear_screen()
+
     if not contacts:
+        print_header("View Contacts")
         print("No contacts found.")
         return
 

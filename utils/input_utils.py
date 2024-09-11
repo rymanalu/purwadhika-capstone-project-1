@@ -62,7 +62,10 @@ def input_name(current_value="", required=True):
     prompt = "Enter name: " if not current_value else f"Enter new name (or press Enter to keep '{
         current_value}'): "
 
-    def validator(x): return len(x.strip()) > 0 if required else lambda x: True
+    def validator(x):
+        if (not required and x == "") or current_value != "":
+            return True
+        return len(x.strip()) > 0 if required else True
     error_msg = "Name cannot be empty." if required else ""
     return get_validated_input(prompt, validator, error_msg) or current_value
 
