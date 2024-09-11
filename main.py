@@ -1,5 +1,4 @@
-from services.add_contact import add_contact
-from services.view_contacts import view_contacts
+import operations
 from utils.contact_utils import load_contacts
 from utils.input_utils import get_validated_input
 from utils.ui_utils import clear_screen, print_header, print_menu
@@ -21,9 +20,9 @@ def main():
         )
 
         if choice == "1":
-            add_contact(contacts, name_index)
+            operations.add_contact(contacts, name_index)
         elif choice == "2":
-            view_contacts(contacts)
+            operations.view_contacts(contacts)
         elif choice == "3":
             # update
             pass
@@ -31,7 +30,7 @@ def main():
             # delete
             pass
         elif choice == "5":
-            # search
+            operations.search_contacts(contacts, name_index)
             pass
         elif choice == "6":
             print("Thank you for using Contacts. Goodbye!")

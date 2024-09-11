@@ -1,6 +1,5 @@
-from services.display_contact import display_contact
 from utils.input_utils import get_validated_input
-from utils.ui_utils import print_header
+from utils.ui_utils import print_contact, print_contact_pagination, print_header
 
 
 def add_contact(contacts, name_index):
@@ -44,6 +43,40 @@ def add_contact(contacts, name_index):
 
     print("\nContact added successfully!")
     print("\nNew Contact Details:")
-    display_contact(new_contact)
+    print_contact(new_contact)
 
     return new_id
+
+
+def search_contacts(contacts, name_index):
+    print_header("Search Contacts")
+
+    search_term = get_validated_input("Enter search term: ", lambda x: len(
+        x.strip()) > 0, "Search term cannot be empty")
+
+    results = []
+
+    for name, ids in name_index.items():
+        if search_term in name:
+            results.extend([contacts[id] for id in ids])
+
+    for contact in contacts.values():
+        if contact not in results:  # Avoid duplicates
+            if (search_term in contact["phone"].lower() or search_term in contact["email"].lower() or any(search_term in category.lower() for category in contact["categories"])):
+                results.append(contact)
+
+    if not results:
+        print("No matching contacts found.")
+        return
+
+    print(f"\n Found {len(results)} matching contacts:")
+    print_contact_pagination(results, "Search Results")
+
+
+def view_contacts(contacts):
+    if not contacts:
+        print("No contacts found.")
+        return
+
+    contacts_list = list(contacts.values())
+    print_contact_pagination(contacts_list, "View Contacts")
