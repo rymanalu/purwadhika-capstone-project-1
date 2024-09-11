@@ -1,4 +1,6 @@
-from utils.input_utils import get_validated_input
+import csv
+import os
+from utils.input_utils import get_validated_input, input_contact
 from utils.ui_utils import print_contact, print_contact_pagination, print_header
 
 
@@ -7,45 +9,50 @@ def add_contact(contacts, name_index):
 
     new_id = max(contacts.keys(), default=0) + 1
 
-    name = get_validated_input(
-        "Enter name: ", lambda x: x.strip() != "", "Name cannot be empty.")
-    phone = get_validated_input("Enter phone number: ", lambda x: x.replace(
-        "-", "").isdigit(), "Invalid phone number. Please enter digits only.")
-    address = input("Enter address (optional): ")
-    email = get_validated_input(
-        "Enter email (optional): ", lambda x: "@" in x or x == "", "Invalid email format.")
-    website = input("Enter website (optional): ")
-
-    categories = []
-    while True:
-        category = input("Enter a category (or press Enter to finish): ")
-        if category == "":
-            break
-        categories.append(category)
-
-    new_contact = {
-        "id": new_id,
-        "name": name,
-        "phone": phone,
-        "address": address,
-        "email": email,
-        "website": website,
-        "categories": categories
-    }
+    new_contact = input_contact()
+    new_contact["id"] = new_id
 
     contacts[new_id] = new_contact
 
-    name_key = name.lower()
+    name_key = new_contact["name"].lower()
     if name_key in name_index:
         name_index[name_index].append(new_id)
     else:
         name_index[name_key] = [new_id]
 
-    print("\nContact added successfully!")
-    print("\nNew Contact Details:")
+    print("\nContact added successfully! New Contact Details:")
     print_contact(new_contact)
 
-    return new_id
+
+def load_contacts():
+    contacts = {}
+    name_index = {}
+    csv_file = "contacts.csv"
+
+    if not os.path.exists(csv_file):
+        with open(csv_file, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["id", "name", "phone", "address",
+                            "email", "website", "categories"])
+        return contacts, name_index
+
+    with open(csv_file, "r", newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            contact_id = int(row["id"])
+            row["id"] = contact_id
+            row["categories"] = row["categories"].split(
+                ",") if row["categories"] else []
+
+            contacts[contact_id] = row
+
+            name_key = row["name"].lower()
+            if name_key in name_index:
+                name_index[name_key].append(contact_id)
+            else:
+                name_index[name_key] = [contact_id]
+
+    return contacts, name_index
 
 
 def search_contacts(contacts, name_index):
@@ -62,7 +69,9 @@ def search_contacts(contacts, name_index):
 
     for contact in contacts.values():
         if contact not in results:  # Avoid duplicates
-            if (search_term in contact["phone"].lower() or search_term in contact["email"].lower() or any(search_term in category.lower() for category in contact["categories"])):
+            if (search_term in contact["phone"].lower() or
+                search_term in contact["email"].lower() or
+                any(search_term in category.lower() for category in contact["categories"])):
                 results.append(contact)
 
     if not results:
@@ -71,6 +80,36 @@ def search_contacts(contacts, name_index):
 
     print(f"\n Found {len(results)} matching contacts:")
     print_contact_pagination(results, "Search Results")
+
+
+def update_contact(contacts, name_index):
+    print_header("Update Contact")
+
+    contact_id = get_validated_input("Enter the ID of the contact to update: ", lambda x: x.isdigit(
+    ) and int(x) in contacts, "Invalid ID. Please enter a valid contact ID.")
+    contact_id = int(contact_id)
+
+    contact = contacts[contact_id]
+    print("\nCurrent contact details:")
+    print_contact(contact)
+
+    updated_contact = input_contact(contact)
+
+    if updated_contact["name"].lower() != contact["name"].lower():
+        old_name_key = contact["name"].lower()
+        new_name_key = updated_contact["name"].lower()
+        name_index[old_name_key].remove(contact_id)
+        if not name_index[old_name_key]:
+            del name_index[old_name_key]
+        if new_name_key in name_index:
+            name_index[new_name_key].append(contact_id)
+        else:
+            name_index[new_name_key] = [contact_id]
+
+    contacts[contact_id] = updated_contact
+
+    print("\nContact updated successfully. New details:")
+    print_contact(updated_contact)
 
 
 def view_contacts(contacts):

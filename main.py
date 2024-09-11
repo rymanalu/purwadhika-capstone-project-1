@@ -1,11 +1,10 @@
 import operations
-from utils.contact_utils import load_contacts
 from utils.input_utils import get_validated_input
 from utils.ui_utils import clear_screen, print_header, print_menu
 
 
 def main():
-    contacts, name_index = load_contacts()
+    contacts, name_index = operations.load_contacts()
     menu_options = ["Add", "View", "Update", "Delete", "Search", "Exit"]
 
     while True:
@@ -24,8 +23,7 @@ def main():
         elif choice == "2":
             operations.view_contacts(contacts)
         elif choice == "3":
-            # update
-            pass
+            operations.update_contact(contacts, name_index)
         elif choice == "4":
             # delete
             pass
