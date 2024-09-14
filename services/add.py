@@ -47,8 +47,9 @@ def __add_new_contact(contacts, name_index, phone_index):
     confirmed = input_utils.confirm_action("Save?")
 
     if confirmed:
-        contacts[new_id] = new_contact
         name_index[new_contact["name"].lower()].append(new_id)
         phone_index[new_contact["phone"]].append(new_id)
+        contacts[new_id] = new_contact
 
         print("\nContact added successfully!")
+        input_utils.input_continue()

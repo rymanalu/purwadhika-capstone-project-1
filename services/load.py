@@ -23,6 +23,7 @@ def load_contacts(filename="contacts.csv"):
 
         for row in reader:
             contact_id = int(row["id"])
+            row["id"] = contact_id
             row["categories"] = row["categories"].split(
                 ',') if row["categories"] else []
 
