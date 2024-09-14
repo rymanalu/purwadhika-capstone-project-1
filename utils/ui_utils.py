@@ -1,4 +1,5 @@
 import os
+from .input_utils import input_continue
 
 
 def clear_screen():
@@ -37,9 +38,9 @@ def print_contact_pagination(contacts, header, page_size=5):
 
         print(f"\nShowing results {start_idx + 1}-{end_idx} of {contacts_len}")
         print("\nNavigation:")
-        print("N - Next Page")
-        print("P - Previous Page")
-        print("Q - Return to Previous Menu")
+        print("[n] Next Page")
+        print("[p] Previous Page")
+        print("[q] Return to Previous Menu")
 
         choice = input("Enter your choice: ").upper()
 
@@ -50,7 +51,7 @@ def print_contact_pagination(contacts, header, page_size=5):
         elif choice == "Q":
             break
         else:
-            input("Invalid choice. Press Enter to continue...")
+            input_continue("Invalid choice. Press Enter to continue...")
 
 
 def print_header(title):
@@ -61,4 +62,4 @@ def print_header(title):
 
 def print_menu(options):
     for i, option in enumerate(options, 1):
-        print(f"{i}. {option}")
+        print(f"[{i}] {option}")

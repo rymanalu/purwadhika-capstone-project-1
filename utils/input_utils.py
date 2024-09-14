@@ -17,6 +17,10 @@ def get_validated_input(prompt, validator=None, error_message="Invalid input. Pl
         print(error_message)
 
 
+def get_valid_search_term(prompt, min_length=3):
+    return get_validated_input(prompt, lambda x: len(x.strip()) >= min_length, f"Search term must be at least {min_length} characters long. Please try again.")
+
+
 def input_address(current_value=""):
     prompt = "Enter address (optional): " if not current_value else f"Enter new address (or press Enter to keep '{
         current_value}'): "
@@ -48,6 +52,10 @@ def input_contact(contact=None):
     contact["categories"] = input_categories(contact.get("categories", []))
 
     return contact
+
+
+def input_continue(message="Press Enter to continue..."):
+    input(message)
 
 
 def input_email(current_value=""):

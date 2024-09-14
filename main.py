@@ -1,11 +1,13 @@
 import operations
+from services.load import load_contacts
+from services.view import view_contacts_menu
 from utils.input_utils import get_validated_input
 from utils.ui_utils import clear_screen, print_header, print_menu
 
 
 def main():
-    contacts, name_index = operations.load_contacts()
-    menu_options = ["Add", "View", "Update", "Delete", "Search", "Exit"]
+    contacts, name_index, phone_index = load_contacts()
+    menu_options = ["View", "Add", "Update", "Delete", "Search", "Exit"]
 
     while True:
         clear_screen()
@@ -19,9 +21,9 @@ def main():
         )
 
         if choice == "1":
-            operations.add_contact(contacts, name_index)
+            view_contacts_menu(contacts, name_index, phone_index)
         elif choice == "2":
-            operations.view_contacts(contacts)
+            operations.add_contact(contacts, name_index)
         elif choice == "3":
             operations.update_contact(contacts, name_index)
         elif choice == "4":
@@ -34,8 +36,6 @@ def main():
             operations.save_contacts(contacts)
             print("Thank you for using Contacts. Goodbye!")
             break
-
-        input("\nPress Enter to continue...")
 
 
 if __name__ == "__main__":
