@@ -3,13 +3,11 @@ from utils.ui_utils import clear_screen, print_contact, print_contact_pagination
 
 
 def view_contacts_menu(contacts, name_index, phone_index):
-    menu_options = ["List all contacts", "Search by ID", "Search by name",
-                    "Search by phone number", "Back to main menu"]
-
     while True:
         clear_screen()
         print_header("View Contacts")
-        print_menu(menu_options)
+        print_menu(["List all contacts", "Search by ID", "Search by name",
+                   "Search by phone number", "Back to main menu"])
 
         choice = get_validated_input(
             "Enter your choice (1-5): ",
@@ -19,7 +17,6 @@ def view_contacts_menu(contacts, name_index, phone_index):
 
         if choice == '1':
             __list_all_contacts(contacts)
-            pass
         elif choice == '2':
             __search_by_id(contacts)
         elif choice == '3':
@@ -89,16 +86,20 @@ def __search_by_phone(contacts, phone_index):
         return
 
     search = get_valid_search_term("Enter phone number to search: ")
-    matching_ids = set()
-
-    for phone, ids in phone_index.items():
-        if search in phone:
-            matching_ids.update(ids)
-
-    matching_contacts = [contacts[id] for id in matching_ids]
+    matching_contacts = __do_search_by_phone(search, contacts, phone_index)
 
     if __display_no_contacts_found(matching_contacts):
         return
 
     print_contact_pagination(
         matching_contacts, f"Contacts matching phone '{search}'")
+
+
+def __do_search_by_phone(search, contacts, phone_index, exact=False):
+    matching_ids = set()
+
+    for phone, ids in phone_index.items():
+        if (exact and phone == search) or (not exact and search in phone):
+            matching_ids.update(ids)
+
+    return [contacts[id] for id in matching_ids]
