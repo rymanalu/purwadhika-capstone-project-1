@@ -32,21 +32,28 @@ def print_contact_pagination(contacts, header, page_size=5):
 
         start_idx = current_page * page_size
         end_idx = min(start_idx + page_size, contacts_len)
+        has_next = current_page < total_pages - 1
+        has_previous = current_page > 0
 
         for contact in contacts[start_idx:end_idx]:
             print_contact(contact)
 
         print(f"\nShowing results {start_idx + 1}-{end_idx} of {contacts_len}")
         print("\nNavigation:")
-        print("[n] Next Page")
-        print("[p] Previous Page")
+
+        if has_next:
+            print("[n] Next Page")
+
+        if has_previous:
+            print("[p] Previous Page")
+
         print("[q] Return to Previous Menu")
 
         choice = input("Enter your choice: ").upper()
 
-        if choice == "N" and current_page < total_pages - 1:
+        if choice == "N" and has_next:
             current_page += 1
-        elif choice == "P" and current_page > 0:
+        elif choice == "P" and has_previous:
             current_page -= 1
         elif choice == "Q":
             break
