@@ -71,7 +71,7 @@ def input_name(current_value="", required=True):
         current_value}'): "
 
     def validator(x):
-        if (not required and x == "") or current_value != "":
+        if (not required and x == "") or (x == "" and current_value != ""):
             return True
         return len(x.strip()) > 0 if required else True
     error_msg = "Name cannot be empty." if required else ""
@@ -83,7 +83,7 @@ def input_phone(current_value="", required=True):
         current_value}'): "
 
     def validator(x):
-        if (not required and x == "") or current_value != "":
+        if (not required and x == "") or (x == "" and current_value != ""):
             return True
         digits = "".join(filter(str.isdigit, x))
         return 8 <= len(digits) <= 13

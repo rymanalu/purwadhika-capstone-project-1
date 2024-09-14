@@ -89,8 +89,11 @@ def __search_by_phone(contacts, phone_index):
 def __do_search_by_phone(search, contacts, phone_index, exact=False):
     matching_ids = set()
 
-    for phone, ids in phone_index.items():
-        if (exact and phone == search) or (not exact and search in phone):
-            matching_ids.update(ids)
+    if exact:
+        matching_ids.update(phone_index[search])
+    else:
+        for phone, ids in phone_index.items():
+            if search in phone:
+                matching_ids.update(ids)
 
     return [contacts[id] for id in matching_ids]
