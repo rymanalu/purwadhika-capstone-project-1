@@ -1,40 +1,38 @@
 from .view import __do_search_by_phone
 import utils.input_utils as input_utils
-from utils.ui_utils import clear_screen, print_contact, print_header, print_menu
+import utils.ui_utils as ui_utils
 
 
 def update_contact_menu(contacts, name_index, phone_index):
     while True:
-        clear_screen()
-        print_header("Update Contact")
-        print_menu(["Update", "Back to main menu"])
+        ui_utils.clear_screen()
+        ui_utils.print_header("Update Contact")
+        ui_utils.print_menu(["Update", "Back to main menu"])
 
         choice = input_utils.get_validated_input(
             "Enter your choice (1-2): ",
-            lambda x: x in ['1', '2'],
+            lambda x: x in ["1", "2"],
             "Invalid choice. Please enter 1 or 2."
         )
 
-        if choice == '1':
+        if choice == "1":
             __update_contact(contacts, name_index, phone_index)
         else:
             break
 
 
 def __update_contact(contacts, name_index, phone_index):
-    clear_screen()
-    print_header("Update Contact")
+    ui_utils.clear_screen()
+    ui_utils.print_header("Update Contact")
     contact_id = input_utils.get_validated_input(
         "Enter the ID of the contact to update: ", lambda x: x.isdigit(), "Invalid ID. Please enter digits only.")
     contact_id = int(contact_id)
 
-    if not contact_id in contacts:
-        print("No contacts found.")
-        input_utils.input_continue()
+    if ui_utils.print_no_contacts_found(contacts, contact_id):
         return
 
-    clear_screen()
-    print_header(f"Update Contact by ID: {contact_id}")
+    ui_utils.clear_screen()
+    ui_utils.print_header(f"Update Contact by ID: {contact_id}")
     old_contact = contacts[contact_id]
     updated_contact = old_contact.copy()
 
@@ -60,9 +58,9 @@ def __update_contact(contacts, name_index, phone_index):
     updated_contact["categories"] = input_utils.input_categories(
         updated_contact["categories"])
 
-    clear_screen()
-    print_header("Preview of Updated Contact")
-    print_contact(updated_contact)
+    ui_utils.clear_screen()
+    ui_utils.print_header("Preview of Updated Contact")
+    ui_utils.print_contact(updated_contact)
     confirmed = input_utils.confirm_action("Save?")
 
     if confirmed:

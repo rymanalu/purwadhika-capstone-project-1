@@ -29,7 +29,7 @@ def input_address(current_value=""):
 
 def input_categories(current_categories=None):
     if current_categories:
-        print("Current categories:", ', '.join(current_categories))
+        print("Current categories:", ", ".join(current_categories))
     print("Enter categories (press Enter after each category, press Enter twice to finish):")
     categories = []
     while True:
@@ -62,7 +62,7 @@ def input_email(current_value=""):
     prompt = "Enter email (optional): " if not current_value else f"Enter new email (or press Enter to keep '{
         current_value}'): "
     error_msg = "Invalid email format."
-    def validator(x): return '@' in x or x == ""
+    def validator(x): return x == "" or "@" in x
     return get_validated_input(prompt, validator, error_msg) or current_value
 
 

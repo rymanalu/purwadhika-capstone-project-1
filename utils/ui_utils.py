@@ -63,3 +63,12 @@ def print_header(title):
 def print_menu(options):
     for i, option in enumerate(options, 1):
         print(f"[{i}] {option}")
+
+
+def print_no_contacts_found(contacts, contact_id=None):
+    if (contact_id is not None and not contact_id in contacts) or (not contacts):
+        print("No contacts found.")
+        input_continue()
+        return True
+
+    return False

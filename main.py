@@ -1,7 +1,6 @@
-import operations
 from services.add import add_contact_menu
 from services.delete import delete_contact_menu
-from services.load import load_contacts
+from services.export_import import load_contacts, save_contacts
 from services.update import update_contact_menu
 from services.view import view_contacts_menu
 from utils.input_utils import get_validated_input
@@ -31,7 +30,7 @@ def main():
         elif choice == "4":
             delete_contact_menu(contacts, name_index, phone_index)
         elif choice == "5":
-            operations.save_contacts(contacts)
+            save_contacts(contacts)
             print("Thank you for using Contacts. Goodbye!")
             break
 

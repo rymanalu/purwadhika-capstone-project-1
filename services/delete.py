@@ -1,41 +1,39 @@
 import utils.input_utils as input_utils
-from utils.ui_utils import clear_screen, print_contact, print_header, print_menu
+import utils.ui_utils as ui_utils
 
 
 def delete_contact_menu(contacts, name_index, phone_index):
     while True:
-        clear_screen()
-        print_header("Delete Contact")
-        print_menu(["Delete", "Back to main menu"])
+        ui_utils.clear_screen()
+        ui_utils.print_header("Delete Contact")
+        ui_utils.print_menu(["Delete", "Back to main menu"])
 
         choice = input_utils.get_validated_input(
             "Enter your choice (1-2): ",
-            lambda x: x in ['1', '2'],
+            lambda x: x in ["1", "2"],
             "Invalid choice. Please enter 1 or 2."
         )
 
-        if choice == '1':
+        if choice == "1":
             __delete_contact(contacts, name_index, phone_index)
         else:
             break
 
 
 def __delete_contact(contacts, name_index, phone_index):
-    clear_screen()
-    print_header("Delete Contact")
+    ui_utils.clear_screen()
+    ui_utils.print_header("Delete Contact")
     contact_id = input_utils.get_validated_input(
         "Enter the ID of the contact to delete: ", lambda x: x.isdigit(), "Invalid ID. Please enter digits only.")
     contact_id = int(contact_id)
 
-    if not contact_id in contacts:
-        print("No contacts found.")
-        input_utils.input_continue()
+    if ui_utils.print_no_contacts_found(contacts, contact_id):
         return
 
-    clear_screen()
-    print_header("Preview of Deleted Contact")
+    ui_utils.clear_screen()
+    ui_utils.print_header("Preview of Deleted Contact")
     deleted_contact = contacts[contact_id]
-    print_contact(deleted_contact)
+    ui_utils.print_contact(deleted_contact)
     confirmed = input_utils.confirm_action("Delete?")
 
     if confirmed:

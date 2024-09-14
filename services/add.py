@@ -11,11 +11,11 @@ def add_contact_menu(contacts, name_index, phone_index):
 
         choice = input_utils.get_validated_input(
             "Enter your choice (1-2): ",
-            lambda x: x in ['1', '2'],
+            lambda x: x in ["1", "2"],
             "Invalid choice. Please enter 1 or 2."
         )
 
-        if choice == '1':
+        if choice == "1":
             __add_new_contact(contacts, name_index, phone_index)
         else:
             break
