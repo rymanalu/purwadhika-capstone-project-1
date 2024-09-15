@@ -22,6 +22,18 @@ This is a simple command-line contacts management application built with Python.
 1. Clone this repository or download the source code.
 2. Navigate to the project directory.
 
+## Setup
+
+1. The application uses a file named `contacts.csv` to store contact data.
+2. A sample file named `contacts.example.csv` is provided with dummy data.
+3. To start with this sample data, copy `contacts.example.csv` and rename it to `contacts.csv`:
+
+```
+cp contacts.example.csv contacts.csv
+```
+
+4. If you don't copy the example file, a new `contacts.csv` will be created when you add your first contact.
+
 ## Usage
 
 Run the application by executing the main script:
@@ -40,7 +52,7 @@ Follow the on-screen prompts to navigate through the application:
 
 ## Data Storage
 
-Contacts are stored in a file named `contacts.csv` in the same directory as the application. This file is created automatically if it doesn't exist.
+Contacts are stored in `contacts.csv` in the same directory as the application. This file is created automatically if it doesn't exist, or you can initialize it with the provided example data as described in the Setup section.
 
 ## Contributing
 
