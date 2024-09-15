@@ -14,14 +14,14 @@ def print_contact(contact):
     Args:
         contact (dict): The contact information to print.
     """
-    print(f"\nID: {contact['id']}")
-    print(f"Name: {contact['name']}")
-    print(f"Phone: {contact['phone']}")
-    for field in ['address', 'email', 'website']:
+    print(f"\nID: {contact["id"]}")
+    print(f"Name: {contact["name"]}")
+    print(f"Phone: {contact["phone"]}")
+    for field in ["address", "email", "website"]:
         if contact[field]:
             print(f"{field.capitalize()}: {contact[field]}")
-    if contact['categories']:
-        print(f"Categories: {', '.join(contact['categories'])}")
+    if contact["categories"]:
+        print(f"Categories: {", ".join(contact["categories"])}")
     print("-" * 60)
 
 
