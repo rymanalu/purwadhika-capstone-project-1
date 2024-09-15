@@ -8,13 +8,11 @@ def confirm_action(prompt):
     Returns:
         bool: True if the user confirms, False otherwise.
     """
-    while True:
-        response = input(f"{prompt} (y/n): ").lower().strip()
-        if response in ["y", "yes"]:
-            return True
-        elif response in ["n", "no"]:
-            return False
-        print("Please answer with 'y' or 'n'.")
+    return get_validated_input(
+        f"{prompt} (y/n): ",
+        lambda x: x.strip().lower() in ["y", "n"],
+        "Please answer with 'y' or 'n'."
+    ).strip().lower() == "y"
 
 
 def get_validated_input(prompt, validator=None, error_message="Invalid input. Please try again."):
